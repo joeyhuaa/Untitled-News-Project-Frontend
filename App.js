@@ -19,15 +19,15 @@ export default function App() {
 
 const styles = StyleSheet.create({
   androidSafeArea: {
-    display: 'flex',
-    flex: 1,
-    // paddingTop: Platform.OS === "android" ? 0 : 0
+    display:'flex',
+    flex:1,
+    // paddingTop:Platform.OS === "android" ? 0 : 0
   },
   container: {
-    display: 'flex',
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    // justifyContent: 'center',
+    display:'flex',
+    flex:1,
+    backgroundColor:'#fff',
+    alignItems:'center',
+    // justifyContent:'center',
   },
 });
