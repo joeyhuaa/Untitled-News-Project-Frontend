@@ -9,8 +9,22 @@ export default function App() {
       <View style={styles.container}>
         <Panel 
           imgUri={'https://images.pexels.com/photos/4033148/pexels-photo-4033148.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'}
-          title={'US Purchases More Vaccine Doses'}
-          summary={'The US Government has purchased 100 million more doses of the COVID-19 vaccine from Pfizer.'}
+          title={'Pfizer-BioNTech Vaccine Making Progress Towards Beating COVID-19'}
+          summary={'The Pfizer-BioNTech vaccine has been shown to be at least 90% effectives in preventing COVID-19. Read all about it here.'}
+          articles={[
+            {
+              headline: '19% or 95%?',
+              writers: 'L. Shumei & B. Yunyi',
+              bias_score: 0,
+              url: 'https://www.globaltimes.cn/page/202101/1212746.shtml'
+            },
+            {
+              headline: 'Safety & Efficacy',
+              writers: 'N England Journal Med',
+              bias_score: 0,
+              url: 'https://www.nejm.org/doi/full/10.1056/NEJMoa2034577'
+            }
+          ]}
         />
       </View>
     </SafeAreaView>
