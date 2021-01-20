@@ -13,16 +13,22 @@ export default function App() {
           summary={'The Pfizer-BioNTech vaccine has been shown to be at least 90% effectives in preventing COVID-19. Read all about it here.'}
           articles={[
             {
-              headline: '19% or 95%?',
-              writers: 'L. Shumei & B. Yunyi',
-              bias_score: 0,
-              url: 'https://www.globaltimes.cn/page/202101/1212746.shtml'
+              headline:'19% or 95%?',
+              writers:'L. Shumei & B. Yunyi',
+              bias_score:0,
+              url:'https://www.globaltimes.cn/page/202101/1212746.shtml'
             },
             {
-              headline: 'Safety & Efficacy',
-              writers: 'N England Journal Med',
-              bias_score: 0,
-              url: 'https://www.nejm.org/doi/full/10.1056/NEJMoa2034577'
+              headline:'Safety & Efficacy',
+              writers:'N England Journal Med',
+              bias_score:0,
+              url:'https://www.nejm.org/doi/full/10.1056/NEJMoa2034577'
+            },
+            {
+              headline:'Vaccine vs. New Variant',
+              writers:'Dr. C. Schuster-Bruce',
+              bias_score:0,
+              url:'https://www.businessinsider.com/coronavirus-variant-vaccine-pfizer-biontech-works-uk-study-2021-1'
             }
           ]}
         />

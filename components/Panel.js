@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     backgroundColor:'#D0D0D0',
     alignSelf:'stretch',
     alignItems:'center',
-    height:800
+    paddingBottom:30
   },
   articleList: {
     marginTop:10,
