@@ -1,7 +1,61 @@
-import React, {useState} from 'react';
-import {StyleSheet, Text, View, Image, TouchableNativeFeedback, Linking} from 'react-native';
+import React, {useState, useEffect, useRef} from 'react';
+import {StyleSheet, Text, View, Image, TouchableWithoutFeedback, Linking, Animate, Animated} from 'react-native';
 import {screenWidth, screenHeight, fontScale, verticalScale} from './Scaler';
-import {whitetan, purple} from './Colors';
+import {whitetan, white, purple} from './Colors';
+
+/**
+ * dimensions
+ */
+const viewWidth = screenWidth() * 0.9;
+
+/**
+ * displays title and summary for the panel
+ * touching it toggles articleList 
+ */
+function MainTouchable({
+  title,
+  summary,
+  setExpanded
+}) {
+  let highlightAnim = useRef(new Animated.Value(1)).current;
+
+  let animate = () => {
+    Animated.timing(highlightAnim, {
+      toValue:0, 
+      duration:100,
+      useNativeDriver:false
+    }).start(() => {
+      Animated.timing(highlightAnim, {
+        toValue:1, 
+        duration:100,
+        useNativeDriver:false
+      }).start();
+    });
+  }
+
+  let interpolation = highlightAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['rgb(208, 208, 208)', 'rgb(224, 224, 224)']
+  }) 
+
+  return (
+    <Animated.View
+      style={{backgroundColor:interpolation}}
+    >
+      <TouchableWithoutFeedback 
+        style={styles.infoView}
+        onPress={() => {
+          setExpanded(); animate();
+        }}
+      >
+        <View>
+          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.summary}>{summary}</Text>
+        </View>
+      </TouchableWithoutFeedback>
+    </Animated.View>
+  )
+}
 
 export default function Panel({
   imgUri,
@@ -19,18 +73,11 @@ export default function Panel({
           uri: imgUri
         }}
       />
-      <View style={styles.infoView}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.summary}>{summary}</Text>
-        <View style={styles.readButton}>
-          <TouchableNativeFeedback
-            style={styles.readButton}
-            onPress={() => setExpanded(!expanded)}
-          >
-            <Text style={styles.readButtonText}>READ</Text>
-          </TouchableNativeFeedback>
-        </View>
-      </View>
+      <MainTouchable 
+        title={title}
+        summary={summary}
+        setExpanded={() => setExpanded(!expanded)}
+      />
     </View>
   )
 
@@ -42,29 +89,24 @@ export default function Panel({
           uri: imgUri
         }}
       />
-      <View style={styles.infoView}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.summary}>{summary}</Text>
+      <MainTouchable 
+        title={title}
+        summary={summary}
+        setExpanded={() => setExpanded(!expanded)}
+      />
+      <View>
         <View style={styles.articleList}>
           {articles.map((a,i) => 
             <View style={styles.articleListRow} key={`article-${i}`}>
               <Text 
-                style={styles.articleHeadline}
+                style={{...styles.articleItemLeft, fontWeight:'bold'}}
                 onPress={() => Linking.openURL(a.url)}
               >{a.headline}</Text>
-              <Text style={styles.articleWriters}>{a.writers}</Text>
-              <Text style={styles.articleScore}>{a.bias_score}</Text>
+              <Text style={styles.articleItemRight}>{a.date}</Text>
+              <Text style={styles.articleItemLeft}>{a.writers}</Text>
+              <Text style={styles.articleItemRight}>{a.bias_score}</Text>
             </View>
           )}
-        </View>
-
-        <View style={styles.readButton}>
-          <TouchableNativeFeedback
-            style={styles.readButton}
-            onPress={() => setExpanded(!expanded)}
-          >
-            <Text style={styles.readButtonText}>COLLAPSE</Text>
-          </TouchableNativeFeedback>
         </View>
       </View>
     </View>
@@ -85,7 +127,7 @@ const styles = StyleSheet.create({
     alignSelf:'center',
     alignItems:'center',
     height:verticalScale(430),
-    width:screenWidth() * .9
+    width:viewWidth
   },
   containerExpanded: {
     marginTop:20,
@@ -94,7 +136,7 @@ const styles = StyleSheet.create({
     alignSelf:'center',
     alignItems:'center',
     paddingBottom:30,
-    width:screenWidth() * .9,
+    width:viewWidth
   },
   image: {
     height:200,
@@ -102,9 +144,7 @@ const styles = StyleSheet.create({
   },
   infoView: {
     display:'flex', 
-    paddingLeft:30,
-    paddingRight:30, 
-    width:screenWidth() // keeps view from widening
+    width:viewWidth
   },
   title: {
     fontWeight:'bold',
@@ -117,25 +157,25 @@ const styles = StyleSheet.create({
     lineHeight:25
   },
   articleList: {
+    display:'flex',
     marginTop:10,
-    backgroundColor:whitetan,
+    backgroundColor:white,
     padding:10
   },
   articleListRow: {
     flexDirection:'row',
-    justifyContent:'space-between',
-    alignItems:'center',
-    height:40,
+    flexWrap:'wrap',
+    justifyContent:'center',
+    height:60,
   },  
-  articleHeadline: {
-    fontWeight:'bold',
-    fontSize:fontScale(15)
+  articleItemLeft: {
+    fontSize:fontScale(15),
+    flexBasis:'80%'
   },
-  articleWriters: {
-    fontSize:fontScale(15)
-  },
-  articleScore: {
-    fontSize:fontScale(15)
+  articleItemRight: {
+    fontSize:fontScale(15),
+    flexBasis:'20%',
+    textAlign:'right'
   },
   readButton: {
     width:100,
