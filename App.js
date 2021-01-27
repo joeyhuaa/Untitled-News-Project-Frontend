@@ -1,10 +1,12 @@
-import React from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, SafeAreaView, ScrollView } from 'react-native';
-
+import React, {useState} from 'react';
+import {StatusBar} from 'expo-status-bar';
+import {StyleSheet, Text, View, SafeAreaView, ScrollView} from 'react-native';
+import {whitetan} from './components/Colors';
 import Panel from './components/Panel';
 
 export default function App() {
+  let [isDarkMode, setIsDarkMode] = useState(false);
+
   return (
     <SafeAreaView style={styles.androidSafeArea}>
       <ScrollView>
@@ -74,7 +76,7 @@ const styles = StyleSheet.create({
   container: {
     display:'flex',
     flex:1,
-    backgroundColor:'#fff',
+    backgroundColor:whitetan,
     alignItems:'center',
     // justifyContent:'center',
   },

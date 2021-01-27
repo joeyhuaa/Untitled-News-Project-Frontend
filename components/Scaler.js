@@ -11,7 +11,7 @@
 
 // export {scale, verticalScale, moderateScale};
 
-import { Dimensions, Platform, PixelRatio } from 'react-native';
+import {Dimensions, Platform, PixelRatio} from 'react-native';
 
 const {
   width: SCREEN_WIDTH,

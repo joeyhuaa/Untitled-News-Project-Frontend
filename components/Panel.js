@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, Button, Linking } from 'react-native';
-
-import { screenWidth, screenHeight, fontScale, verticalScale } from './Scaler';
+import React, {useState} from 'react';
+import {StyleSheet, Text, View, Image, TouchableNativeFeedback, Linking} from 'react-native';
+import {screenWidth, screenHeight, fontScale, verticalScale} from './Scaler';
+import {whitetan, purple} from './Colors';
 
 export default function Panel({
   imgUri,
@@ -23,11 +23,12 @@ export default function Panel({
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.summary}>{summary}</Text>
         <View style={styles.readButton}>
-          <Button 
-            title={'Read'} 
-            color={'#8000ff'}
+          <TouchableNativeFeedback
+            style={styles.readButton}
             onPress={() => setExpanded(!expanded)}
-          />
+          >
+            <Text style={styles.readButtonText}>READ</Text>
+          </TouchableNativeFeedback>
         </View>
       </View>
     </View>
@@ -58,11 +59,12 @@ export default function Panel({
         </View>
 
         <View style={styles.readButton}>
-          <Button 
-            title={'Collapse'} 
-            color={'#8000ff'}
+          <TouchableNativeFeedback
+            style={styles.readButton}
             onPress={() => setExpanded(!expanded)}
-          />
+          >
+            <Text style={styles.readButtonText}>COLLAPSE</Text>
+          </TouchableNativeFeedback>
         </View>
       </View>
     </View>
@@ -79,19 +81,20 @@ const styles = StyleSheet.create({
   containerCollapsed: {
     marginTop:20,
     display:'flex',
-    backgroundColor:'#D0D0D0',
-    alignSelf:'stretch',
+    backgroundColor:whitetan,
+    alignSelf:'center',
     alignItems:'center',
     height:verticalScale(430),
+    width:screenWidth() * .9
   },
   containerExpanded: {
     marginTop:20,
     display:'flex',
-    backgroundColor:'#D0D0D0',
-    alignSelf:'stretch',
+    backgroundColor:whitetan,
+    alignSelf:'center',
     alignItems:'center',
     paddingBottom:30,
-    width:screenWidth(),
+    width:screenWidth() * .9,
   },
   image: {
     height:200,
@@ -115,7 +118,7 @@ const styles = StyleSheet.create({
   },
   articleList: {
     marginTop:10,
-    backgroundColor:'whitesmoke',
+    backgroundColor:whitetan,
     padding:10
   },
   articleListRow: {
@@ -136,11 +139,15 @@ const styles = StyleSheet.create({
   },
   readButton: {
     width:100,
-    height:40,
-    backgroundColor:'#8000ff',
+    height:45,
+    backgroundColor:purple,
     display:'flex',
+    alignItems:'center',
     justifyContent:'center',
     borderRadius:5,
     marginTop:20,
+  },
+  readButtonText: {
+    color:'white',
   }
 })
