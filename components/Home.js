@@ -1,12 +1,14 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, ScrollView} from 'react-native';
 import Panel from './Panel';
-import {whitetan} from './Colors';
+import {whitetan, white} from './Colors';
+import Header from './Header';
 
 export default function Home() {
   return (
     <ScrollView>
         <View style={styles.container}>
+          <Header />
           <Panel 
             imgUri={'https://images.pexels.com/photos/4033148/pexels-photo-4033148.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'}
             title={'Pfizer-BioNTech Vaccine Making Progress Towards Beating COVID-19'}
@@ -69,7 +71,7 @@ const styles = StyleSheet.create({
   container: {
     display:'flex',
     flex:1,
-    backgroundColor:whitetan,
+    backgroundColor:white,
     alignItems:'center',
   },
 })

@@ -1,31 +1,33 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {StyleSheet, Text, View, Image, TouchableWithoutFeedback, Linking, Animate, Animated} from 'react-native';
+import {StyleSheet, Text, View, Image, TouchableWithoutFeedback, Linking, Animated} from 'react-native';
+import {Icon} from 'react-native-vector-icons'
 import {screenWidth, screenHeight, fontScale, verticalScale} from './Scaler';
 import {whitetan, white, purple} from './Colors';
 
 /**
- * dimensions
+ * css consts
  */
-const viewWidth = screenWidth() * 0.9;
+const viewWidth = screenWidth() * 0.95;
+const viewPadding = 5;
 
 /**
  * displays title and summary for the panel
- * touching it toggles articleList 
+ * touching it toggles ArticleList 
  */
 function MainTouchable({
   title,
   summary,
   setExpanded
 }) {
-  let highlightAnim = useRef(new Animated.Value(1)).current;
+  let animRef = useRef(new Animated.Value(1)).current;
 
   let animate = () => {
-    Animated.timing(highlightAnim, {
+    Animated.timing(animRef, {
       toValue:0, 
       duration:100,
       useNativeDriver:false
     }).start(() => {
-      Animated.timing(highlightAnim, {
+      Animated.timing(animRef, {
         toValue:1, 
         duration:100,
         useNativeDriver:false
@@ -33,17 +35,16 @@ function MainTouchable({
     });
   }
 
-  let interpolation = highlightAnim.interpolate({
+  let interpolation = animRef.interpolate({
     inputRange: [0, 1],
-    outputRange: ['rgb(208, 208, 208)', 'rgb(224, 224, 224)']
+    outputRange: ['rgb(224,224,224)', 'rgb(255,255,255)']
   }) 
 
   return (
     <Animated.View
-      style={{backgroundColor:interpolation}}
+      style={{...styles.mainTouchable, backgroundColor:interpolation}}
     >
       <TouchableWithoutFeedback 
-        style={styles.infoView}
         onPress={() => {
           setExpanded(); animate();
         }}
@@ -57,6 +58,64 @@ function MainTouchable({
   )
 }
 
+/**
+ * displays the list of articles
+ */
+function ArticleList({
+  articles
+}) {
+  let animRefs = articles.map(() => useRef(new Animated.Value(1)).current);
+
+  let animate = ref => {
+    Animated.timing(ref, {
+      toValue:0, 
+      duration:100,
+      useNativeDriver:false
+    }).start(() => {
+      Animated.timing(ref, {
+        toValue:1, 
+        duration:100,
+        useNativeDriver:false
+      }).start();
+    });
+  }
+
+  let interpolation = ref => ref.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['rgb(224,224,224)', 'rgb(255,255,255)']
+  }) 
+
+  return (
+    <View style={styles.articleList}>
+      {articles.map((a,i) => 
+        <Animated.View 
+          style={{backgroundColor:interpolation(animRefs[i])}}
+          key={`article-${i}`}
+        >
+          <TouchableWithoutFeedback 
+            onPress={() => {
+              Linking.openURL(a.url)
+              animate(animRefs[i]);
+            }}
+          >
+            <View style={styles.articleListRow}>
+              <Text 
+                style={{...styles.articleItemLeft, fontWeight:'bold'}}
+              >{a.headline}</Text>
+              <Text style={styles.articleItemRight}>{a.date}</Text>
+              <Text style={styles.articleItemLeft}>{a.writers}</Text>
+              <Text style={styles.articleItemRight}>{a.bias_score}</Text>
+            </View>
+          </TouchableWithoutFeedback>
+        </Animated.View>
+      )}
+    </View>
+  )
+}
+
+/**
+ * the main panel component
+ */
 export default function Panel({
   imgUri,
   title,
@@ -94,21 +153,9 @@ export default function Panel({
         summary={summary}
         setExpanded={() => setExpanded(!expanded)}
       />
-      <View>
-        <View style={styles.articleList}>
-          {articles.map((a,i) => 
-            <View style={styles.articleListRow} key={`article-${i}`}>
-              <Text 
-                style={{...styles.articleItemLeft, fontWeight:'bold'}}
-                onPress={() => Linking.openURL(a.url)}
-              >{a.headline}</Text>
-              <Text style={styles.articleItemRight}>{a.date}</Text>
-              <Text style={styles.articleItemLeft}>{a.writers}</Text>
-              <Text style={styles.articleItemRight}>{a.bias_score}</Text>
-            </View>
-          )}
-        </View>
-      </View>
+      <ArticleList 
+        articles={articles}
+      />
     </View>
   )
 
@@ -119,11 +166,14 @@ export default function Panel({
   )
 }
 
+/**
+ * styles
+ */
 const styles = StyleSheet.create({
   containerCollapsed: {
     marginTop:20,
     display:'flex',
-    backgroundColor:whitetan,
+    backgroundColor:white,
     alignSelf:'center',
     alignItems:'center',
     height:verticalScale(430),
@@ -132,7 +182,7 @@ const styles = StyleSheet.create({
   containerExpanded: {
     marginTop:20,
     display:'flex',
-    backgroundColor:whitetan,
+    backgroundColor:white,
     alignSelf:'center',
     alignItems:'center',
     paddingBottom:30,
@@ -140,16 +190,20 @@ const styles = StyleSheet.create({
   },
   image: {
     height:200,
-    alignSelf:'stretch'
+    width:viewWidth,
+    alignSelf:'center',
   },
-  infoView: {
+  mainTouchable: {
     display:'flex', 
-    width:viewWidth
+    width:viewWidth,
+    paddingTop:10,
+    paddingBottom:10,
+    paddingLeft:viewPadding,
+    paddingRight:viewPadding
   },
   title: {
     fontWeight:'bold',
     fontSize:fontScale(20),
-    marginTop:10
   },
   summary: {
     fontSize:fontScale(15),
@@ -158,14 +212,16 @@ const styles = StyleSheet.create({
   },
   articleList: {
     display:'flex',
-    marginTop:10,
     backgroundColor:white,
-    padding:10
+    width:viewWidth,
+    // borderWidth:1
   },
   articleListRow: {
     flexDirection:'row',
     flexWrap:'wrap',
     justifyContent:'center',
+    alignContent:'center',
+    padding:5,
     height:60,
   },  
   articleItemLeft: {
@@ -177,17 +233,4 @@ const styles = StyleSheet.create({
     flexBasis:'20%',
     textAlign:'right'
   },
-  readButton: {
-    width:100,
-    height:45,
-    backgroundColor:purple,
-    display:'flex',
-    alignItems:'center',
-    justifyContent:'center',
-    borderRadius:5,
-    marginTop:20,
-  },
-  readButtonText: {
-    color:'white',
-  }
 })
