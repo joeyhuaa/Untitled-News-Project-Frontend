@@ -1,14 +1,15 @@
 import React from 'react';
 import {StyleSheet, View, Image, TouchableWithoutFeedback, Animated} from 'react-native';
-import newspaper from '../assets/newspaper.jpg';
-import {screenWidth, screenHeight, fontScale, verticalScale} from './Scaler';
-import {white, purple} from './Colors';
-// import EvilIcons from 'expo/vector-icons/EvilIcons';
+import {screenWidth, screenHeight, fontScale} from './Scaler';
+import {white, purple} from './Consts';
+import {Icon} from 'react-native-elements';
 
-function ProfilePic({img}) {
+function ProfilePic({imgUri}) {
   return (
     <View>
       <Image 
+        style={styles.profpic}
+        source={{uri: imgUri}}
       />
     </View>
   )
@@ -16,22 +17,31 @@ function ProfilePic({img}) {
 
 export default function Header() {
   return (
-    <View style={styles.header}>
-      <Image  
-        source={newspaper}
-        style={styles.icon}
+    <View style={styles.header}> 
+      <ProfilePic 
+        imgUri={'https://avatars.githubusercontent.com/u/46336318?s=400&u=2c84b9fe9d824931ca6e794fcd57c08e3672c5ad&v=4'}
       />
+      <View style={styles.icon} >
+        <Icon 
+          name='reader-outline' 
+          type='ionicon' 
+          size={50} 
+          color={purple}
+        />
+      </View>
     </View>
   )
 }
 
 let styles = StyleSheet.create({
   header: {
-    // position:'absolute',
-    // zIndex:10,
+    zIndex:10,
     display:'flex',
+    flexDirection:'row',
+    alignItems:'center',
     justifyContent:'center',
-    minHeight:screenHeight() * 0.1,
+    paddingTop:20,
+    minHeight:screenHeight() * 0.125,
     width:screenWidth(),
     backgroundColor:white,
     shadowColor:'#989898',
@@ -40,12 +50,17 @@ let styles = StyleSheet.create({
     shadowOffset: {
       height:1,
       width:1
-    }
+    },
+  },
+  profpic: {
+    position:'absolute',
+    left:-150,
+    top:-23,
+    width:45,
+    height:45,
+    borderRadius:45/2,
   },
   icon: {
-    width:50, 
-    height:50, 
-    resizeMode:'stretch',
-    alignSelf:'center',
+    
   }
 })

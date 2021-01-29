@@ -1,14 +1,8 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {StyleSheet, Text, View, Image, TouchableWithoutFeedback, Linking, Animated} from 'react-native';
-import {Icon} from 'react-native-vector-icons'
-import {screenWidth, screenHeight, fontScale, verticalScale} from './Scaler';
-import {whitetan, white, purple} from './Colors';
-
-/**
- * css consts
- */
-const viewWidth = screenWidth() * 0.95;
-const viewPadding = 5;
+import {Icon} from 'react-native-elements';
+import {fontScale, verticalScale} from './Scaler';
+import {whitetan, white, purple, viewPadding, viewWidth} from './Consts';
 
 /**
  * displays title and summary for the panel
@@ -17,6 +11,7 @@ const viewPadding = 5;
 function MainTouchable({
   title,
   summary,
+  isExpanded,
   setExpanded
 }) {
   let animRef = useRef(new Animated.Value(1)).current;
@@ -52,6 +47,18 @@ function MainTouchable({
         <View>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.summary}>{summary}</Text>
+          {isExpanded ? 
+            <Icon 
+              type='evilicon'
+              name='chevron-up'
+              size={40}
+            /> : 
+            <Icon 
+              type='evilicon'
+              name='chevron-down'
+              size={40}
+            />
+          }
         </View>
       </TouchableWithoutFeedback>
     </Animated.View>
@@ -135,6 +142,7 @@ export default function Panel({
       <MainTouchable 
         title={title}
         summary={summary}
+        isExpanded={expanded}
         setExpanded={() => setExpanded(!expanded)}
       />
     </View>
@@ -151,6 +159,7 @@ export default function Panel({
       <MainTouchable 
         title={title}
         summary={summary}
+        isExpanded={expanded}
         setExpanded={() => setExpanded(!expanded)}
       />
       <ArticleList 
@@ -171,22 +180,26 @@ export default function Panel({
  */
 const styles = StyleSheet.create({
   containerCollapsed: {
-    marginTop:20,
+    marginTop:40,
     display:'flex',
     backgroundColor:white,
     alignSelf:'center',
     alignItems:'center',
-    height:verticalScale(430),
-    width:viewWidth
+    height:verticalScale(400),
+    width:viewWidth,
+    borderBottomWidth:1,
+    borderColor:'darkgray'
   },
   containerExpanded: {
-    marginTop:20,
+    marginTop:40,
     display:'flex',
     backgroundColor:white,
     alignSelf:'center',
     alignItems:'center',
     paddingBottom:30,
-    width:viewWidth
+    width:viewWidth,
+    borderBottomWidth:1,
+    borderColor:'darkgray'
   },
   image: {
     height:200,
