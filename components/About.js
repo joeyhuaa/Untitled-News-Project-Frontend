@@ -1,8 +1,7 @@
 import React from 'react';
-import {StyleSheet, Text, View, ScrollView, TouchableWithoutFeedback, TouchableHighlight, Linking} from 'react-native';
-import {Icon} from 'react-native-vector-icons'
+import {StyleSheet, Text, View, ScrollView, TouchableHighlight} from 'react-native';
 import {screenWidth, fontScale, verticalScale, screenHeight} from './Scaler';
-import {whitetan, white, purple, viewWidth, viewPadding} from './Consts';
+import {white, purple, viewWidth, viewPadding} from './Consts';
 
 export default function About() {
   return (

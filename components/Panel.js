@@ -15,6 +15,7 @@ function MainTouchable({
   setExpanded
 }) {
   let animRef = useRef(new Animated.Value(1)).current;
+  console.log(animRef)
 
   let animate = () => {
     Animated.timing(animRef, {
@@ -30,14 +31,14 @@ function MainTouchable({
     });
   }
 
-  let interpolation = animRef.interpolate({
+  let interpolateBgColor = animRef.interpolate({
     inputRange: [0, 1],
     outputRange: ['rgb(224,224,224)', 'rgb(255,255,255)']
   }) 
 
   return (
     <Animated.View
-      style={{...styles.mainTouchable, backgroundColor:interpolation}}
+      style={{...styles.mainTouchable, backgroundColor:interpolateBgColor}}
     >
       <TouchableWithoutFeedback 
         onPress={() => {
@@ -87,7 +88,7 @@ function ArticleList({
     });
   }
 
-  let interpolation = ref => ref.interpolate({
+  let interpolateBgColor = ref => ref.interpolate({
     inputRange: [0, 1],
     outputRange: ['rgb(224,224,224)', 'rgb(255,255,255)']
   }) 
@@ -96,7 +97,7 @@ function ArticleList({
     <View style={styles.articleList}>
       {articles.map((a,i) => 
         <Animated.View 
-          style={{backgroundColor:interpolation(animRefs[i])}}
+          style={{backgroundColor:interpolateBgColor(animRefs[i])}}
           key={`article-${i}`}
         >
           <TouchableWithoutFeedback 

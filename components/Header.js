@@ -4,22 +4,30 @@ import {screenWidth, screenHeight, fontScale} from './Scaler';
 import {white, purple} from './Consts';
 import {Icon} from 'react-native-elements';
 
-function ProfilePic({imgUri}) {
+function ProfilePic({
+  imgUri,
+  showSidebar
+}) {
   return (
-    <View>
-      <Image 
-        style={styles.profpic}
-        source={{uri: imgUri}}
-      />
-    </View>
+    <TouchableWithoutFeedback onPress={showSidebar}>
+      <View>
+        <Image 
+          style={styles.profpic}
+          source={{uri: imgUri}}
+        />
+      </View>
+    </TouchableWithoutFeedback>
   )
 }
 
-export default function Header() {
+export default function Header({
+  showSidebar
+}) {
   return (
     <View style={styles.header}> 
       <ProfilePic 
         imgUri={'https://avatars.githubusercontent.com/u/46336318?s=400&u=2c84b9fe9d824931ca6e794fcd57c08e3672c5ad&v=4'}
+        showSidebar={showSidebar}
       />
       <View style={styles.icon} >
         <Icon 
