@@ -1,32 +1,42 @@
 import React from 'react';
-import {StyleSheet, View, Image, TouchableWithoutFeedback, Animated} from 'react-native';
+import {StyleSheet, View, Image, Text, TouchableWithoutFeedback, Animated} from 'react-native';
 import {screenWidth, screenHeight, fontScale} from './Scaler';
 import {white, purple} from './Consts';
 import {Icon} from 'react-native-elements';
 
-function ProfilePic({
+export function ProfilePic({
   imgUri,
-  showSidebar
+  name,
+  username,
+  imgStyles,
+  nameStyles,
+  usernameStyles,
+  showSidebar,
 }) {
   return (
     <TouchableWithoutFeedback onPress={showSidebar}>
       <View>
         <Image 
-          style={styles.profpic}
+          style={imgStyles}
           source={{uri: imgUri}}
         />
+        {name && <Text style={nameStyles}>{name}</Text>}
+        {username && <Text style={usernameStyles}>{username}</Text>}
       </View>
     </TouchableWithoutFeedback>
   )
 }
 
 export default function Header({
-  showSidebar
+  showSidebar,
+  profImgUri,
+  profImgStyles
 }) {
   return (
     <View style={styles.header}> 
       <ProfilePic 
-        imgUri={'https://avatars.githubusercontent.com/u/46336318?s=400&u=2c84b9fe9d824931ca6e794fcd57c08e3672c5ad&v=4'}
+        imgUri={profImgUri}
+        imgStyles={profImgStyles}
         showSidebar={showSidebar}
       />
       <View style={styles.icon} >
@@ -60,15 +70,4 @@ let styles = StyleSheet.create({
       width:1
     },
   },
-  profpic: {
-    position:'absolute',
-    left:-150,
-    top:-23,
-    width:45,
-    height:45,
-    borderRadius:45/2,
-  },
-  icon: {
-    
-  }
 })

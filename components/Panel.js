@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useRef} from 'react';
 import {StyleSheet, Text, View, Image, TouchableWithoutFeedback, Linking, Animated} from 'react-native';
 import {Icon} from 'react-native-elements';
 import {fontScale, verticalScale} from './Scaler';
@@ -15,7 +15,6 @@ function MainTouchable({
   setExpanded
 }) {
   let animRef = useRef(new Animated.Value(1)).current;
-  console.log(animRef)
 
   let animate = () => {
     Animated.timing(animRef, {
