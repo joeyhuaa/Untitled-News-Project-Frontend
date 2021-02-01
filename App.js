@@ -7,6 +7,9 @@ import Sidebar from './components/Sidebar';
 import Home from './components/Home';
 import About from './components/About';
 import Profile from './components/Profile';
+import Settings from './components/Settings'
+import Donate from './components/Donate'
+import Trending from './components/Trending'
 
 export default function App() {
   let [isDarkMode, setIsDarkMode] = useState(false);
@@ -70,7 +73,7 @@ export default function App() {
     hideSidebar();
     if (view === 'home') return <Home topics={topics} />
     if (view === 'about') return <About />
-    if (view === 'profile') return ( 
+    if (view === 'profile') return (
       <Profile 
         imgUri={profImgUri} 
         name={name} 
@@ -78,6 +81,9 @@ export default function App() {
         savedTopics={savedTopics} 
       />
     )
+    if (view==='settings') return <Settings/>
+    if (view==='donate') return <Donate/>
+    if (view==='trending') return <Trending/>
   }
 
   return (
