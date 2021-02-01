@@ -1,6 +1,128 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, Button, Linking } from 'react-native';
+import React, {useState, useRef} from 'react';
+import {StyleSheet, Text, View, Image, TouchableWithoutFeedback, Linking, Animated} from 'react-native';
+import {Icon} from 'react-native-elements';
+import {fontScale, verticalScale} from './Scaler';
+import {whitetan, white, purple, viewPadding, viewWidth} from './Consts';
 
+/**
+ * displays title and summary for the panel
+ * touching it toggles ArticleList 
+ */
+function MainTouchable({
+  title,
+  summary,
+  isExpanded,
+  setExpanded
+}) {
+  let animRef = useRef(new Animated.Value(1)).current;
+
+  let animate = () => {
+    Animated.timing(animRef, {
+      toValue:0, 
+      duration:100,
+      useNativeDriver:false
+    }).start(() => {
+      Animated.timing(animRef, {
+        toValue:1, 
+        duration:100,
+        useNativeDriver:false
+      }).start();
+    });
+  }
+
+  let interpolateBgColor = animRef.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['rgb(224,224,224)', 'rgb(255,255,255)']
+  }) 
+
+  return (
+    <Animated.View
+      style={{...styles.mainTouchable, backgroundColor:interpolateBgColor}}
+    >
+      <TouchableWithoutFeedback 
+        onPress={() => {
+          setExpanded(); animate();
+        }}
+      >
+        <View>
+          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.summary}>{summary}</Text>
+          {isExpanded ? 
+            <Icon 
+              type='evilicon'
+              name='chevron-up'
+              size={40}
+            /> : 
+            <Icon 
+              type='evilicon'
+              name='chevron-down'
+              size={40}
+            />
+          }
+        </View>
+      </TouchableWithoutFeedback>
+    </Animated.View>
+  )
+}
+
+/**
+ * displays the list of articles
+ */
+function ArticleList({
+  articles
+}) {
+  let animRefs = articles.map(() => useRef(new Animated.Value(1)).current);
+
+  let animate = ref => {
+    Animated.timing(ref, {
+      toValue:0, 
+      duration:100,
+      useNativeDriver:false
+    }).start(() => {
+      Animated.timing(ref, {
+        toValue:1, 
+        duration:100,
+        useNativeDriver:false
+      }).start();
+    });
+  }
+
+  let interpolateBgColor = ref => ref.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['rgb(224,224,224)', 'rgb(255,255,255)']
+  }) 
+
+  return (
+    <View style={styles.articleList}>
+      {articles.map((a,i) => 
+        <Animated.View 
+          style={{backgroundColor:interpolateBgColor(animRefs[i])}}
+          key={`article-${i}`}
+        >
+          <TouchableWithoutFeedback 
+            onPress={() => {
+              Linking.openURL(a.url)
+              animate(animRefs[i]);
+            }}
+          >
+            <View style={styles.articleListRow}>
+              <Text 
+                style={{...styles.articleItemLeft, fontWeight:'bold'}}
+              >{a.headline}</Text>
+              <Text style={styles.articleItemRight}>{a.date}</Text>
+              <Text style={styles.articleItemLeft}>{a.writers}</Text>
+              <Text style={styles.articleItemRight}>{a.bias_score}</Text>
+            </View>
+          </TouchableWithoutFeedback>
+        </Animated.View>
+      )}
+    </View>
+  )
+}
+
+/**
+ * the main panel component
+ */
 export default function Panel({
   imgUri,
   title,
@@ -17,17 +139,12 @@ export default function Panel({
           uri: imgUri
         }}
       />
-      <View style={{display:'flex', paddingLeft:30, paddingRight:30}}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.summary}>{summary}</Text>
-        <View style={styles.readButton}>
-          <Button 
-            title={'Read'} 
-            color={'#8000ff'}
-            onPress={() => setExpanded(!expanded)}
-          />
-        </View>
-      </View>
+      <MainTouchable 
+        title={title}
+        summary={summary}
+        isExpanded={expanded}
+        setExpanded={() => setExpanded(!expanded)}
+      />
     </View>
   )
 
@@ -39,31 +156,15 @@ export default function Panel({
           uri: imgUri
         }}
       />
-      <View style={{display:'flex', paddingLeft:30, paddingRight:30}}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.summary}>{summary}</Text>
-
-        <View style={styles.articleList}>
-          {articles.map((a,i) => 
-            <View style={styles.articleListRow} key={`article-${i}`}>
-              <Text 
-                style={{fontWeight:'bold'}}
-                onPress={() => Linking.openURL(a.url)}
-              >{a.headline}</Text>
-              <Text>{a.writers}</Text>
-              <Text>{a.bias_score}</Text>
-            </View>
-          )}
-        </View>
-
-        <View style={styles.readButton}>
-          <Button 
-            title={'Collapse'} 
-            color={'#8000ff'}
-            onPress={() => setExpanded(!expanded)}
-          />
-        </View>
-      </View>
+      <MainTouchable 
+        title={title}
+        summary={summary}
+        isExpanded={expanded}
+        setExpanded={() => setExpanded(!expanded)}
+      />
+      <ArticleList 
+        articles={articles}
+      />
     </View>
   )
 
@@ -74,53 +175,75 @@ export default function Panel({
   )
 }
 
+/**
+ * styles
+ */
 const styles = StyleSheet.create({
   containerCollapsed: {
+    marginTop:40,
     display:'flex',
-    backgroundColor:'#D0D0D0',
-    alignSelf:'stretch',
+    backgroundColor:white,
+    alignSelf:'center',
     alignItems:'center',
-    height:430
+    height:verticalScale(400),
+    width:viewWidth,
+    borderBottomWidth:1,
+    borderColor:'darkgray'
   },
   containerExpanded: {
+    marginTop:40,
     display:'flex',
-    backgroundColor:'#D0D0D0',
-    alignSelf:'stretch',
+    backgroundColor:white,
+    alignSelf:'center',
     alignItems:'center',
-    paddingBottom:30
+    paddingBottom:30,
+    width:viewWidth,
+    borderBottomWidth:1,
+    borderColor:'darkgray'
   },
-  articleList: {
-    marginTop:10,
-    backgroundColor:'whitesmoke',
-    padding:10
-  },
-  articleListRow: {
-    flexDirection:'row',
-    justifyContent:'space-between',
-    alignItems:'center',
-    height:40,
-  },  
   image: {
     height:200,
-    alignSelf:'stretch'
+    width:viewWidth,
+    alignSelf:'center',
+  },
+  mainTouchable: {
+    display:'flex', 
+    width:viewWidth,
+    paddingTop:10,
+    paddingBottom:10,
+    paddingLeft:viewPadding,
+    paddingRight:viewPadding
   },
   title: {
     fontWeight:'bold',
-    fontSize:20,
-    marginTop:10
+    fontSize:fontScale(20),
   },
   summary: {
-    fontSize:15,
+    fontSize:fontScale(15),
     marginTop:5,
     lineHeight:25
   },
-  readButton: {
-    width:100,
-    height:40,
-    backgroundColor:'#8000ff',
+  articleList: {
     display:'flex',
+    backgroundColor:white,
+    width:viewWidth,
+    // borderWidth:1
+  },
+  articleListRow: {
+    flexDirection:'row',
+    flexWrap:'wrap',
     justifyContent:'center',
-    borderRadius:5,
-    marginTop:20
-  }
+    alignContent:'center',
+    padding:5,
+    height:60,
+  },  
+  articleItemLeft: {
+    fontSize:fontScale(15),
+    flexBasis:'80%'
+  },
+  articleItemRight: {
+    fontSize:fontScale(15),
+    flexBasis:'20%',
+    textAlign:'right'
+  },
 })
