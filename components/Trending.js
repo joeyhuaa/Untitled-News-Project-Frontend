@@ -1,13 +1,13 @@
 import React from 'react'
 import { View, Image } from 'react-native'
 import { Card, ListItem, Button, Icon, Text } from 'react-native-elements'
-
+import {purple} from './Consts'
 
 export default function Trending() {
     return (
         <View>
             <View>
-                <Text h2 style={{ textAlign: 'center', marginTop: "15%", color: "black" }}>Trending</Text>
+                <Text h2 style={{ textAlign: 'center', marginTop: "10%", color: "black" }}>Trending</Text>
             </View>
 
 
@@ -70,11 +70,11 @@ const trendingCardStyle = {
     backgroundColor: darkMode ? "#222323" : "white",
     height: 200,
     borderWidth: '1.5',
-    borderColor: 'mediumslateblue',
+    borderColor: purple,
 }
 
 const circleStyle = {
-    backgroundColor: "mediumslateblue",
+    backgroundColor: purple,
     borderRadius: 100 / 2,
     width: "25%",
     height: "25%",

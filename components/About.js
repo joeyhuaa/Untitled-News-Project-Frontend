@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     fontWeight:'bold',
     color:purple,
     lineHeight:30,
-    marginTop:10,
+    marginTop:15,
     marginBottom:20
   },
   emphaticParagraph: {
