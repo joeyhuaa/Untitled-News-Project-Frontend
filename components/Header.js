@@ -61,8 +61,8 @@ let styles = StyleSheet.create({
     paddingTop:20,
     minHeight:screenHeight() * 0.125,
     width:screenWidth(),
-    backgroundColor:white,
-    shadowColor:'#989898',
+    backgroundColor:'#2E1A47',
+    shadowColor:'black',
     shadowOpacity:0.8,
     shadowRadius:4,
     shadowOffset: {

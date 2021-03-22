@@ -20,11 +20,3 @@ export default function Settings(){
         </View>
     )
 }
-
-const buttonColor = {
-    marginTop:"10%", 
-    borderWidth:1, 
-    alignItems:'center',  
-    justifyContent:'center', 
-    borderColor:purple
-}

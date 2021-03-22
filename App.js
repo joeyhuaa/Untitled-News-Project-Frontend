@@ -53,6 +53,41 @@ export default function App() {
   let savedTopics = topics;
 
 
+  let purpleTopics = [
+    {
+      key: 1,
+      headline: 'Jeff Bezos sells Amazon to ISIS to expand drone operations',
+      image: require('./assets/images/jeffbezos.png'),
+      date: '5-30-21',
+      writers: ['John Smith', 'John Doe', 'Allan Pierce'],
+      category:'Technology and Science'
+    },
+    {
+      key: 2,
+      headline: 'Joe Biden says communism is inevitable and it will help spaghetti stackers the most',
+      image: require('./assets/images/joebiden.png'),
+      date: '5-30-21',
+      writers: ['John Smith', 'John Doe', 'Allan Pierce'],
+      category: 'Politics'
+    },
+    {
+      key: 3,
+      headline: 'Sacramento Kings lose 25 games in a row. Coach Luke Walton says Playoffs are still achieveable.',
+      image: require('./assets/images/jeffbezos.png'),
+      date: '5-30-21',
+      writers: ['John Smith', 'John Doe', 'Allan Pierce'],
+      category: 'Religion'
+    },
+    {
+      key: 4,
+      headline: 'Acclaimed Jewel Thief Larry Lawton given Presidential Medal of Freedom',
+      image: require('./assets/images/jeffbezos.png'),
+      date: '5-30-21',
+      writers: ['John Smith', 'John Doe', 'Allan Pierce'],
+      category: 'National Trend'
+    }
+  ]
+
   let showSidebar = () => {
     Animated.timing(sideBarLeftPosAnim, {
       toValue:0,
@@ -71,7 +106,7 @@ export default function App() {
 
   let currentView = () => {
     hideSidebar();
-    if (view === 'home') return <Home topics={topics} />
+    if (view === 'home') return <Home topics={purpleTopics} />
     if (view === 'about') return <About />
     if (view === 'profile') return (
       <Profile 
